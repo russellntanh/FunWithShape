@@ -9,6 +9,7 @@
         WindowStartupLocation="CenterScreen">
     <DockPanel>
         <ToolBar DockPanel.Dock="Top" Height ="50">
+            <!--Shape type button-->
             <RadioButton x:Name="CircleRadioBtn" GroupName="ShapeOption" Click="CircleRadioBtn_Click" ToolTip="Circle">
                 <Ellipse Fill="Red" Width="35" Height="35"/>
             </RadioButton>
@@ -18,7 +19,25 @@
             <RadioButton x:Name="LineRadioBtn" GroupName="ShapeOption" Click="LineRadioBtn_Click" ToolTip="Line">
                 <Line Stroke="Blue" Width="35" Height="35" X1="10" Y1="10" X2="25" Y2="25" StrokeThickness="10" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
             </RadioButton>
+            
+            <!--Separator-->
             <Separator/>
+
+            <!--Undo button-->
+            <Button x:Name="UndoButton" Click="UndoButton_Click" Width="35" Height="35" ToolTip="Undo">
+                <TextBlock Text="&#xE7A7;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Button>
+
+            <!--Redo button-->
+            <Button x:Name="RedoButton" Click="RedoButton_Click" Width="35" Height="35" ToolTip="Redo">
+                <TextBlock Text="&#xE7A6;" FontFamily="Segoe MDL2 Assets" FontSize="20" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Button>
+            <!--Separator-->
+            <Separator/>
+
+            <!--Clear button-->
             <Button x:Name="ResetButton" Click="ResetButton_Click" Margin="10,0,0,0"
                     Width="35" Height="35" HorizontalAlignment="Right" ToolTip="Clear">
                 <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>

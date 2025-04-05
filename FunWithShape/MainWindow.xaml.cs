@@ -18,9 +18,14 @@ namespace FunWithShape
         };
         private ShapeType _selectedShape;
 
+        // stack to contains the shape
+        private Stack<UIElement> undoStack = new Stack<UIElement>();
+        private Stack<UIElement> redoStack = new Stack<UIElement>();
+
         public MainWindow()
         {
             InitializeComponent();
+            UpdateButtonStatus();
         }
 
         private void CircleRadioBtn_Click(object sender, RoutedEventArgs e)
@@ -62,7 +67,12 @@ namespace FunWithShape
             Canvas.SetTop(shapeToRender, e.GetPosition(DrawingCanvas).Y - (shapeToRender.Height / 2.0));
 
             // add shape object to canvas
-            DrawingCanvas.Children.Add(shapeToRender);
+            if (shapeToRender != null)
+            {
+                DrawingCanvas.Children.Add(shapeToRender);
+                undoStack.Push(shapeToRender);
+                UpdateButtonStatus();
+            }
         }
 
         private void DrawingCanvas_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -85,7 +95,37 @@ namespace FunWithShape
             if (result == MessageBoxResult.OK)
             {
                 DrawingCanvas.Children.Clear();
+                undoStack.Clear();
+                redoStack.Clear();
             }
+            UpdateButtonStatus();
+        }
+
+        private void UndoButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (undoStack.Count == 0) return;
+
+            UIElement uiElement = undoStack.Pop();
+            DrawingCanvas.Children.Remove(uiElement);
+            redoStack.Push(uiElement);
+            UpdateButtonStatus();
+        }
+
+        private void RedoButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (redoStack.Count == 0) return;
+
+            UIElement uiElement = redoStack.Pop();
+            DrawingCanvas.Children.Add(uiElement);
+            undoStack.Push(uiElement);
+            UpdateButtonStatus();
+        }
+
+        private void UpdateButtonStatus()
+        {
+            UndoButton.IsEnabled = undoStack.Count > 0;
+            RedoButton.IsEnabled = redoStack.Count > 0;
+            ResetButton.IsEnabled = DrawingCanvas.Children.Count > 0;
         }
     }
 }
